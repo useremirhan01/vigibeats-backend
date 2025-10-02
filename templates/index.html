@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<div class="hero" style="background-color: #181818; padding: 80px 0; text-align: center; font-family: Arial, Helvetica, sans-serif;">
+    <h3 style="color: #ffffff; font-size: 48px; font-weight: bold; margin-bottom: 20px;">Your First Hit Starts Here</h3>
+    <form class="search-bar" style="display: flex; justify-content: center; margin-top: 30px;">
+        <input type="text" name = "keyword" class="input-sm" style="width: 40%; padding: 15px; border-radius: 25px 0 0 25px; border: none; outline: none; font-size: 16px; background-color: rgba(255, 255, 255, 0.1); color: white;">
+        <button style="padding: 15px 30px; border-radius: 0 25px 25px 0; border: none; background-color: #8421ff; color: #fff; font-size: 16px; cursor: pointer;">Search</button>
+    </form>
+    <div class="trending-tags mt-3" style="margin-top: 20px; color: #ffffff;">
+        <p style="font-size: 20px; font-weight: 500;">What's trending right now:</p>
+        <button style="background-color: #333; color: #fff; border: none; border-radius: 20px; margin: 5px; padding: 10px 20px;">rap</button>
+        <button style="background-color: #333; color: #fff; border: none; border-radius: 20px; margin: 5px; padding: 10px 20px;">trap beat</button>
+        <button style="background-color: #333; color: #fff; border: none; border-radius: 20px; margin: 5px; padding: 10px 20px;">beatstars</button>
+        <button style="background-color: #333; color: #fff; border: none; border-radius: 20px; margin: 5px; padding: 10px 20px;">kendrick lamar</button>
+    </div>
+</div>
+
+<div class="container trending-tracks" style="background-color: #282828; padding: 50px 0; display: flex; justify-content: center; flex-wrap: wrap;">
+    <div class="card" style="background-color: #1f1f1f; border: none; margin: 10px; width: 220px;">
+        <img src="{% static 'images/track1.jpg' %}" alt="Track 1" style="border-radius: 10px; width: 100%;">
+        <div class="card-body" style="text-align: center; color: #fff;">
+            <h5 class="card-title" style="font-size: 18px;">$30.00</h5>
+            <p class="card-text" style="font-size: 14px;">Villain Eyes</p>
+        </div>
+    </div>
+    <div class="card" style="background-color: #1f1f1f; border: none; margin: 10px; width: 220px;">
+        <img src="{% static 'images/track2.jpg' %}" alt="Track 2" style="border-radius: 10px; width: 100%;">
+        <div class="card-body" style="text-align: center; color: #fff;">
+            <h5 class="card-title" style="font-size: 18px;">$20.00</h5>
+            <p class="card-text" style="font-size: 14px;">That Mexican OT x ...</p>
+        </div>
+    </div>
+</div>
+
+<div class="trusted-by" style="background-color: #202020; padding: 40px 0; text-align: center;">
+    <h5 style="color: #fff; margin-bottom: 20px;">Trusted by:</h5>
+    <div style="overflow: hidden; position: relative;">
+        <div class="scrolling-brands" style="white-space: nowrap; animation: scroll 10s linear infinite;">
+            <img src="{% static 'images/brand1.png' %}" alt="Brand 1" style="max-width: 100px; margin: 10px; display: inline-block;">
+            <img src="{% static 'images/brand2.png' %}" alt="Brand 2" style="max-width: 100px; margin: 10px; display: inline-block;">
+        </div>
+    </div>
+</div>
+
+<div class="kickstart-section" style="background-color: #181818; padding: 50px 0; text-align: center; font-family: Arial, Helvetica, sans-serif;">
+    <h3 style="color: #ffffff; font-size: 36px; font-weight: bold;">Kickstart your music career today</h3>
+    <ul style="list-style-type: none; padding: 0; color: #ffffff; font-size: 18px;">
+        <li style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #8421ff;"></i> The largest marketplace for high quality beats</li>
+        <li style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #8421ff;"></i> Seamless purchasing experience</li>
+        <li style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #8421ff;"></i> Simple licensing options</li>
+        <li style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #8421ff;"></i> A community that understands you</li>
+    </ul>
+    <button class="btn btn-primary" style="background-color: #8421ff; border: none; padding: 10px 20px; font-size: 18px;">Get started</button>
+</div>
+
+<div class="made-on" style="background-color: #282828; padding: 50px 0; text-align: center;">
+    <h3 style="color: #ffffff; font-size: 36px; font-weight: bold;">YES, THAT BEAT WAS BOUGHT ON VIGIBEATS.</h3>
+    <p style="color: #ffffff; font-size: 18px;">Millions of artists have found their perfect beat on our marketplace.</p>
+    <button class="btn btn-secondary" style="background-color: #8421ff; color: #fff; border: none; padding: 10px 20px;">Your next hit is waiting</button>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col"><img src="{% static 'images/album1.jpg' %}" alt="Album 1" style="max-width: 150px; margin: 10px;"></div>
+        <div class="col"><img src="{% static 'images/album2.jpg' %}" alt="Album 2" style="max-width: 150px; margin: 10px;"></div>
+    </div>
+</div>
+
+<div class="footer" style="background-color: #181818; padding: 20px 0; text-align: center; color: #ffffff;">
+    <p>&copy; 2024 VIGIBEATS. All rights reserved.</p>
+</div>
+
+<style>
+    @keyframes scroll {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+    }
+</style>
+
+{% endblock body %}

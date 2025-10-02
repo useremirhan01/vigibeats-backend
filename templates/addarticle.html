@@ -1,0 +1,178 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beat Yükle - VIGIBEATS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #181818;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #121212;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #8421ff;
+        }
+        .logo {
+            height: 50px;
+        }
+        .upload-container {
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #1f1f1f;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            color: #8421ff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-label {
+            color: #ddd;
+        }
+        .form-control {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+        }
+        .form-control-file {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .form-text {
+            color: #bbb;
+        }
+        .btn-upload {
+            background-color: #8421ff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .btn-upload:hover {
+            background-color: #6e19d8;
+        }
+        .preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .footer {
+            background-color: #121212;
+            padding: 20px 40px;
+            text-align: center;
+            color: #fff;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with Logo and Search Bar -->
+    <div class="header">
+        <img class="logo" src="{% static 'images/vigi_logo.png' %}" alt="VIGIBEATS Logo">
+    </div>
+
+    <!-- Beat Upload Form -->
+    <div class="upload-container">
+        <h1>Beat Yükle</h1>
+        <form method="post"  enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Beat Title -->
+            <div class="mb-3">
+                <label for="beat-title" class="form-label">Beat Başlığı</label>
+                <input type="text" name="title" class="form-control" id="beat-title" placeholder="Beat başlığını girin" required>
+            </div>
+
+            <!-- Beat Price -->
+            <div class="mb-3">
+                <label for="beat-price" class="form-label">Fiyat (₺)</label>
+                <input type="number" name="price" class="form-control" id="beat-price" placeholder="Fiyatı girin" required>
+            </div>
+
+            <!-- Beat Cover -->
+            <div class="mb-3">
+                <label for="beat-cover" class="form-label">Beat Cover Yükleyin</label>
+                <input type="file" name="cover" class="form-control-file" id="beat-cover" accept="image/*" required>
+                <small class="form-text">JPG, PNG dosya formatlarını kullanın. Maksimum dosya boyutu: 5 MB.</small>
+            </div>
+
+            <!-- Beat File -->
+            <div class="mb-3">
+                <label for="beat-file" class="form-label">Beat Dosyası Yükleyin</label>
+                <input type="file" name="audio_file" class="form-control-file" id="beat-file" accept="audio/*" required>
+                <small class="form-text">MP3, WAV dosya formatlarını kullanın. Maksimum dosya boyutu: 20 MB.</small>
+            </div>
+
+            <!-- Beat Description -->
+            <div class="mb-3">
+                <label for="beat-description" class="form-label">Açıklama</label>
+                <textarea name="description" class="form-control" id="beat-description" rows="3" placeholder="Beat hakkında kısa bir açıklama yazın"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn-upload">Yükle</button>
+            </div>
+        </form>
+
+        <!-- Image Preview -->
+        <div class="preview">
+            <h4>Yüklenen Beat Cover Önizlemesi:</h4>
+            <img id="cover-preview" src="#" alt="Beat Cover" style="display: none;">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 VIGIBEATS. All rights reserved.</p>
+    </div>
+
+    <script>
+        // Image Preview Functionality
+        const coverInput = document.getElementById('beat-cover');
+        const coverPreview = document.getElementById('cover-preview');
+
+        coverInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    coverPreview.setAttribute('src', event.target.result);
+                    coverPreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                coverPreview.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
+{% endblock body %}

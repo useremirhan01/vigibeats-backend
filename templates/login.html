@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+{% load socialaccount %}
+{% block body %}
+    <!DOCTYPE html>
+    <html lang="tr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Giriş Yap</title>
+        <style>
+            body {
+                background-color: rgb(22, 22, 22);
+                color: white;
+                font-family: Arial, Helvetica, sans-serif;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+            .auth-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                max-width: 400px;
+                flex-direction: column;
+            }
+            .auth-box {
+                background-color: rgb(39, 39, 39);
+                padding: 40px;
+                border-radius: 10px;
+                width: 100%;
+                text-align: center;
+            }
+            .auth-box h2 {
+                margin-bottom: 20px;
+                font-size: 24px;
+            }
+            .auth-box input {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 15px;
+                border-radius: 5px;
+                border: 1px solid rgb(60, 60, 60);
+                background-color: rgb(56, 56, 56);
+                color: white;
+            }
+            .auth-box button {
+                width: 100%;
+                padding: 10px;
+                border-radius: 5px;
+                border: none;
+                background-color: rgb(132, 0, 255);
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            .auth-box button:hover {
+                background-color: rgb(100, 0, 200);
+            }
+            .auth-box .google-signin {
+                margin-top: 15px;
+                background-color: white;
+                color: black;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 5px;
+                padding: 10px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            .auth-box .google-signin img {
+                margin-right: 10px;
+            }
+            .auth-box .google-signin:hover {
+                background-color: #e2e2e2;
+            }
+            .auth-box a {
+                display: block;
+                margin-top: 10px;
+                color: rgb(132, 0, 255);
+                text-decoration: none;
+                font-size: 14px;
+            }
+            .auth-box a:hover {
+                text-decoration: underline;
+            }
+            .logo {
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        {% load crispy_forms_tags %}
+        <div class="auth-container">
+            <img class="logo" src="file:///C:/Users/user/Desktop/vigi_logo.jpg" alt="Vigilante Logo" width="150">
+            <div class="auth-box">
+                
+            
+                
+                <h2>Giriş Yap</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <button type = "submit" class = "btn btn-danger">Giriş Yap</button>
+                </form>
+                <div class="google-signin">
+                    <img src="https://www.gstatic.com/images/branding/product/2x/google_48dp.png" alt="Google Logo" width="20">
+                    <a href="{% provider_login_url 'google' %}">Google ile Giriş Yap</a>
+                </div>
+                <a href="/user/register">Hesabınız yok mu? Kayıt Ol</a>
+                <a href="/forgot-password">Şifremi Unuttum</a>
+            </div>
+        </div>
+    </body>
+    </html>
+
+{% endblock body %}

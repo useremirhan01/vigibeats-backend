@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block body %}
+<html lang="tr">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Sanatçı Stüdyo Arayüzü</title>
+      <style>
+          body {
+              background-color: rgb(22, 22, 22);
+              color: white;
+              font-family: Arial, Helvetica, sans-serif;
+              margin: 0;
+              padding: 0;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              padding: 20px;
+          }
+          .header {
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 20px;
+          }
+          .logo {
+              margin-right: 10px;
+          }
+          .profile {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+          }
+          .profile img {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+          }
+          .nav {
+              display: flex;
+              justify-content: center;
+              gap: 20px;
+              margin-bottom: 20px;
+              width: 100%;
+          }
+          .nav a {
+              color: white;
+              text-decoration: none;
+              font-size: 18px;
+              transition: color 0.3s ease;
+          }
+          .nav a:hover {
+              color: rgb(132, 0, 255);
+          }
+          .main-content {
+              width: 100%;
+              max-width: 1200px;
+              display: flex;
+              justify-content: space-between;
+              gap: 20px;
+          }
+          .side-menu {
+              width: 250px;
+              background-color: rgb(39, 39, 39);
+              padding: 20px;
+              border-radius: 10px;
+          }
+          .side-menu a {
+              display: block;
+              color: white;
+              text-decoration: none;
+              padding: 10px 0;
+              border-bottom: 1px solid rgb(60, 60, 60);
+              transition: color 0.3s ease;
+              cursor: pointer;
+          }
+          .side-menu a:hover {
+              color: rgb(132, 0, 255);
+          }
+          .dashboard {
+              flex-grow: 1;
+              background-color: rgb(39, 39, 39);
+              padding: 20px;
+              border-radius: 10px;
+              display: none;
+          }
+          .dashboard.active {
+              display: block;
+          }
+          .dashboard h2 {
+              font-size: 24px;
+              margin-bottom: 20px;
+          }
+          .form-group {
+              margin-bottom: 15px;
+          }
+          .form-group label {
+              display: block;
+              margin-bottom: 5px;
+              font-size: 16px;
+          }
+          .form-group input,
+          .form-group textarea {
+              width: 100%;
+              padding: 10px;
+              border-radius: 5px;
+              border: 1px solid rgb(60, 60, 60);
+              background-color: rgb(56, 56, 56);
+              color: white;
+              margin-bottom: 10px;
+          }
+          .form-group button {
+              padding: 10px 20px;
+              background-color: rgb(132, 0, 255);
+              color: white;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+              transition: background-color 0.3s ease;
+          }
+          .form-group button:hover {
+              background-color: rgb(100, 0, 200);
+          }
+          .footer {
+              margin-top: 40px;
+              text-align: center;
+              color: rgb(187, 187, 187);
+              font-size: 14px;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="header">
+          <img class="logo" src="file:///C:/Users/user/Desktop/vigi_logo.jpg" alt="Logo" width="100">
+          <div class="profile">
+              <img src="file:///C:/Users/user/Pictures/Screenshots/Screenshot%202024-07-31%20144121.png" alt="Profile Picture">
+              <span>REWL</span>
+          </div>
+      </div>
+  
+      <div class="nav">
+          <a href="javascript:void(0)" onclick="showSection('dashboard')">Dashboard</a>
+          <a href="javascript:void(0)" onclick="showSection('upload')">Beat Yükle</a>
+          <a href="javascript:void(0)" onclick="showSection('manage-beats')">Beatleri Yönet</a>
+          <a href="javascript:void(0)" onclick="showSection('manage-projects')">Projeleri Yönet</a>
+          <a href="javascript:void(0)" onclick="showSection('analytics')">İstatistikler</a>
+          <a href="javascript:void(0)" onclick="showSection('settings')">Ayarlar</a>
+      </div>
+  
+      <div class="main-content">
+          <!-- Side Menu -->
+          <div class="side-menu">
+              <a href="javascript:void(0)" onclick="showSection('upload')">Yeni Beat Yükle</a>
+              <a href="javascript:void(0)" onclick="showSection('manage-beats')">Beatleri Yönet</a>
+              <a href="javascript:void(0)" onclick="showSection('manage-projects')">Projeleri Yönet</a>
+              <a href="javascript:void(0)" onclick="showSection('file-management')">Dosyaları Yönet</a>
+              <a href="javascript:void(0)" onclick="showSection('analytics')">İstatistikler</a>
+              <a href="javascript:void(0)" onclick="showSection('settings')">Ayarlar</a>
+          </div>
+  
+          <!-- Dashboard Sections -->
+          <div class="dashboard active" id="dashboard">
+              <h2>Dashboard</h2>
+              <p>Welcome to the studio dashboard.</p>
+          </div>
+  
+          <!-- Beat Upload Form -->
+          <div class="dashboard" id="upload">
+              <h2>Yeni Beat Yükle</h2>
+              <form method="post"  enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label for="beat-title">Beat Başlığı</label>
+                      <input type="text" name="title" class="form-control" id="beat-title" placeholder="Beat başlığını girin" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="beat-price">Fiyat (₺)</label>
+                      <input type="number" name="price" class="form-control" id="beat-price" placeholder="Fiyatı girin" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="beat-cover">Beat Cover Yükleyin</label>
+                      <input type="file" name="cover" class="form-control-file" id="beat-cover" accept="image/*" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="beat-file">Beat Dosyası Yükleyin</label>
+                      <input type="file" name="audio_file" class="form-control-file" id="beat-file" accept="audio/*" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="beat-description">Açıklama</label>
+                      <textarea name="description" class="form-control" id="beat-description" rows="3" placeholder="Beat hakkında kısa bir açıklama yazın"></textarea>
+                  </div>
+                  <div class="form-group">
+                      <button type="submit">Yükle</button>
+                  </div>
+              </form>
+          </div>
+  
+          <!-- Beat Management Section -->
+          <div class="dashboard" id="manage-beats">
+              <h2>Beatleri Yönet</h2>
+              <div class="beats-list">
+                  <div class="beat-item">
+                      <h4>Beat 1</h4>
+                      <p>Açıklama: Birinci beat</p>
+                  </div>
+                  <div class="beat-item">
+                      <h4>Beat 2</h4>
+                      <p>Açıklama: İkinci beat</p>
+                  </div>
+              </div>
+          </div>
+  
+          <!-- Project Management Section -->
+          <div class="dashboard" id="manage-projects">
+              <h2>Projeleri Yönet</h2>
+              <div class="projects-list">
+                  <div class="project-item">
+                      <h4>Proje 1</h4>
+                      <p>Son güncelleme: 2024-07-31</p>
+                  </div>
+                  <div class="project-item">
+                      <h4>Proje 2</h4>
+                      <p>Son güncelleme: 2024-07-29</p>
+                  </div>
+              </div>
+          </div>
+  
+          <!-- Analytics Section -->
+          <div class="dashboard"
+          <h2>İstatistikler</h2>
+          <p>Burada istatistiklerinizi görebilirsiniz.</p>
+      </div>
+  
+      <!-- Settings Section -->
+      <div class="dashboard" id="settings">
+          <h2>Ayarlar</h2>
+  
+          <!-- Profil Özelleştirme -->
+          <div class="form-group">
+              <h3>Profil Özelleştirme</h3>
+              <p>Profilini düzenlemek için aşağıdaki butona tıklayabilirsin.</p>
+              <a href="/profile/customize/" class="btn btn-primary" style="background-color: #8421ff; border: none; padding: 10px 20px; border-radius: 5px;">Profil Özelleştirme</a>
+          </div>
+  
+          <hr style="border-top: 1px solid #8421ff; margin: 20px 0;">
+  
+          <!-- Hesap Ayarları -->
+          <div class="form-group">
+              <h3>Hesap Ayarları</h3>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">Parola Değiştir</button>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">Hesap Bağlantılarını Yönet</button>
+          </div>
+  
+          <hr style="border-top: 1px solid #8421ff; margin: 20px 0;">
+  
+          <!-- Güvenlik Ayarları -->
+          <div class="form-group">
+              <h3>Güvenlik Ayarları</h3>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">İki Faktörlü Doğrulama</button>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">Güvenli Cihazlar</button>
+          </div>
+  
+          <hr style="border-top: 1px solid #8421ff; margin: 20px 0;">
+  
+          <!-- Dil ve Bölge Ayarları -->
+          <div class="form-group">
+              <h3>Dil ve Bölge Ayarları</h3>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">Dil Seçimi</button>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">Saat Dilimi Ayarla</button>
+          </div>
+  
+          <hr style="border-top: 1px solid #8421ff; margin: 20px 0;">
+  
+          <!-- Görünüm ve Tema Ayarları -->
+          <div class="form-group">
+              <h3>Görünüm ve Tema Ayarları</h3>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">Karanlık Mod</button>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">Tema Renklerini Değiştir</button>
+          </div>
+  
+          <hr style="border-top: 1px solid #8421ff; margin: 20px 0;">
+  
+          <!-- Gizlilik ve Güvenlik -->
+          <div class="form-group">
+              <h3>Gizlilik Ayarları</h3>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">Gizlilik Ayarları</button>
+          </div>
+  
+          <hr style="border-top: 1px solid #8421ff; margin: 20px 0;">
+  
+          <!-- Bildirim Ayarları -->
+          <div class="form-group">
+              <h3>Bildirim Ayarları</h3>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">E-posta Bildirimleri</button>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">SMS Bildirimleri</button>
+          </div>
+  
+          <hr style="border-top: 1px solid #8421ff; margin: 20px 0;">
+  
+          <!-- Destek ve Yardım -->
+          <div class="form-group">
+              <h3>Destek ve Yardım</h3>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">Destekle İletişime Geç</button>
+              <button class="btn btn-secondary" style="background-color: #333; padding: 10px 20px; border-radius: 5px;">SSS</button>
+          </div>
+      </div>
+  </div>
+  
+  <div class="footer">
+      <p>&copy; 2024 Vigilante Studios. Tüm hakları saklıdır.</p>
+  </div>
+  
+  <script>
+      function showSection(sectionId) {
+          // Hide all dashboard sections
+          var sections = document.querySelectorAll('.dashboard');
+          sections.forEach(function(section) {
+              section.classList.remove('active');
+          });
+  
+          // Show the selected section
+          var selectedSection = document.getElementById(sectionId);
+          selectedSection.classList.add('active');
+      }
+  </script>
+  </body>
+  </html>
+{% endblock body %}

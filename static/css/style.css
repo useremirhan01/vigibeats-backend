@@ -1,0 +1,244 @@
+/* General Body Settings */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  background-color: #181818; /* Dark background for the overall site */
+  font-family: 'Poppins', sans-serif; /* Font family for consistency */
+  color: #ffffff; /* Default font color */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Full-width containers */
+.container-fluid, .hero, .trending-tracks, .trusted-by, .kickstart-section, .made-on, .footer {
+  width: 100%;
+  margin: 0;
+}
+
+/* Remove margin and padding from .container */
+.container-fluid {
+  padding: 0;
+  max-width: 100%;
+}
+
+/* Hero Section */
+.hero {
+  background-color: #181818;
+  padding: 80px 0;
+  text-align: center;
+}
+
+.hero h3 {
+  color: #ffffff;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.search-bar input {
+  width: 40%;
+  padding: 15px;
+  border-radius: 25px 0 0 25px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.search-bar button {
+  padding: 15px 30px;
+  border-radius: 0 25px 25px 0;
+  border: none;
+  background-color: #8421ff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Trending Tags */
+.trending-tags {
+  margin-top: 20px;
+  color: #ffffff;
+}
+
+.trending-tags p {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.trending-tags button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  margin: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.trending-tags button:hover {
+  background-color: #8421ff;
+}
+
+/* Trending Tracks */
+.trending-tracks {
+  background-color: #282828;
+  padding: 50px 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: #1f1f1f;
+  border: none;
+  margin: 10px;
+  width: 220px;
+  text-align: center;
+}
+
+.card img {
+  border-radius: 10px;
+  width: 100%;
+}
+
+.card h5 {
+  font-size: 18px;
+}
+
+.card p {
+  font-size: 14px;
+}
+
+/* Trusted By Section */
+.trusted-by {
+  background-color: #202020;
+  padding: 40px 0;
+  text-align: center;
+}
+
+.trusted-by h5 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.trusted-by .scrolling-brands {
+  white-space: nowrap;
+  overflow: hidden;
+  animation: scroll 10s linear infinite;
+}
+
+.trusted-by img {
+  max-width: 100px;
+  margin: 10px;
+  display: inline-block;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Kickstart Section */
+.kickstart-section {
+  background-color: #181818;
+  padding: 50px 0;
+  text-align: center;
+}
+
+.kickstart-section h3 {
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.kickstart-section ul {
+  list-style-type: none;
+  padding: 0;
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.kickstart-section li {
+  margin: 10px 0;
+}
+
+.kickstart-section li i {
+  color: #8421ff;
+  margin-right: 10px;
+}
+
+.kickstart-section button {
+  background-color: #8421ff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+/* Made On Section */
+.made-on {
+  background-color: #282828;
+  padding: 50px 0;
+  text-align: center;
+}
+
+.made-on h3 {
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.made-on p {
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.made-on button {
+  background-color: #8421ff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.made-on .row img {
+  max-width: 150px;
+  margin: 10px;
+}
+
+/* Footer Section */
+.footer {
+  background-color: #181818;
+  padding: 20px 0;
+  text-align: center;
+  color: #ffffff;
+}
+
+.footer p {
+  margin: 0;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #6421bf;
+}

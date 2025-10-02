@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container my-5">
+    <!-- Başlık ve Arama Formu -->
+    <div class="row align-items-center mb-4">
+        <div class="col-md-6">
+            <h3 class="mb-0">Makaleler</h3>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <form method="get" class="d-flex">
+                {% csrf_token %}
+                <input type="text" name="keyword" class="form-control me-2" maxlength="64" placeholder="Ara...">
+                <button type="submit" class="btn btn-danger">Ara</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Makaleler Listesi -->
+    {% if articles %}
+    <div class="row">
+        {% for article in articles %}
+        <div class="col-lg-8 mb-4">
+            <article class="card">
+                <div class="card-body">
+                    <header class="mb-3">
+                        <h1 class="card-title h4">
+                            <a href="{% url 'article:detail' article.id %}" class="text-decoration-none">
+                                {{ article.title }}
+                            </a>
+                        </h1>
+                        <p class="card-subtitle text-muted small">
+                            {{ article.created_date }} by {{ article.author }}
+                        </p>
+                    </header>
+                    <p class="card-text">{{ article.content|safe|truncatewords:20 }}</p>
+                </div>
+            </article>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-danger" role="alert">
+        Makale Bulunmuyor.
+    </div>
+    {% endif %}
+</div>
+{% endblock body %}

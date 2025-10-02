@@ -1,0 +1,348 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ article.title }} - VIGIBEATS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #181818;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #121212;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #8421ff;
+        }
+        .logo {
+            height: 50px;
+        }
+        .search-bar {
+            display: flex;
+            width: 50%;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 25px 0 0 25px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 16px;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 0 25px 25px 0;
+            background-color: #8421ff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .search-bar button:hover {
+            background-color: #6e19d8;
+        }
+        .beat-container {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .beat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #8421ff;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .beat-header h1 {
+            color: #8421ff;
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .beat-header p {
+            color: #ddd;
+            font-size: 18px;
+        }
+        .report-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .report-button img {
+            width: 24px;
+            height: 24px;
+        }
+        .beat-cover {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+        .beat-stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .beat-stats div {
+            text-align: center;
+        }
+        .beat-stats h4 {
+            color: #ddd;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .beat-stats p {
+            font-size: 16px;
+        }
+        .heart-icon {
+            color: #8421ff;
+            cursor: pointer;
+            font-size: 24px;
+            transition: color 0.3s;
+        }
+        .heart-icon.liked {
+            color: #ff4d4d;
+        }
+        /* Playbar styling */
+        .beat-player {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .beat-player audio {
+            width: 100%;
+            max-width: 700px;
+            height: 50px;
+            border-radius: 25px;
+            background-color: #333;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+            outline: none;
+            transition: box-shadow 0.3s;
+        }
+        .beat-player audio:hover {
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.8);
+        }
+        .comments-section {
+            margin-top: 50px;
+        }
+        .comments-section h3 {
+            color: #8421ff;
+            font-size: 32px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #8421ff;
+            padding-bottom: 10px;
+        }
+        .comment-card {
+            background-color: #1f1f1f;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            position: relative;
+        }
+        .comment-card h5 {
+            color: #8421ff;
+            margin: 0;
+        }
+        .comment-card p {
+            color: #ddd;
+            margin-top: 10px;
+        }
+        .comment-card .report-comment {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .comment-card .report-comment img {
+            width: 20px;
+            height: 20px;
+        }
+        .add-comment {
+            background-color: #1f1f1f;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .add-comment h4 {
+            color: #8421ff;
+            margin-bottom: 20px;
+        }
+        .add-comment input,
+        .add-comment textarea {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        .add-comment button {
+            background-color: #8421ff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .add-comment button:hover {
+            background-color: #6e19d8;
+        }
+        .footer {
+            background-color: #121212;
+            padding: 20px 40px;
+            text-align: center;
+            color: #fff;
+            margin-top: 60px;
+        }
+        .footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with Logo and Search Bar -->
+    <div class="header">
+        <img class="logo" src="{% static 'images/mail.png' %}" alt="VIGIBEATS Logo">
+        <div class="search-bar">
+            <input type="text" placeholder="Explore new sounds - search for beats and producers">
+            <button>Search</button>
+        </div>
+    </div>
+
+    <!-- Beat Details -->
+    <div class="beat-container">
+        <!-- Beat Header -->
+        <div class="beat-header">
+            <div>
+                <h1>{{ article.title }}</h1>
+            </div>
+            <button type="button" class="report-button" onclick="reportBeat()">
+                <img src="{% static 'images/flag-icon.png' %}" alt="Report Beat">
+            </button>
+        </div>
+
+        <!-- Beat Cover -->
+        <div class="beat-player">
+            <img src="{{ beat.cover.url }}" alt="Beat Cover" class="beat-cover">
+            <audio controls>
+                <source src="{{ beat.audio_file.url }}" type="audio/mpeg">
+                Tarayıcınız bu sesi desteklemiyor.
+            </audio>
+        </div>
+
+        <!-- Beat Stats -->
+        <div class="beat-stats">
+            
+            </div>
+        </div>
+
+        <!-- Comment Section -->
+        <div class="comments-section">
+            <h3>Yorumlar</h3>
+
+            <!-- Display Comments -->
+            {% if comments %}
+                <div class="comments-list">
+                    {% for comment in comments %}
+                    <div class="comment-card">
+                        <h5>{{ comment.author }}</h5>
+                        <p>{{ comment.content }}</p>
+                        
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-danger">Henüz yorum yapılmamış.</div>
+            {% endif %}
+
+            <!-- Add Comment Form -->
+            <div class="add-comment">
+                <h4>Yorum Yaz</h4>
+                <form method="post" action="{% url 'article:comment' article.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="comment_author" style="color: #ddd;">İsim</label>
+                        <input type="text" name="comment_author" class="form-control" id="comment_author" placeholder="John Doe" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment_content" style="color: #ddd;">Yorum</label>
+                        <textarea name="comment_content" class="form-control" id="comment_content" rows="3" required></textarea>
+                    </div>
+                    <button type="submit">Onayla</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 VIGIBEATS. All rights reserved.</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    <script>
+        // Like/Unlike functionality
+        function toggleLike() {
+            const heartIcon = document.getElementById('heart-icon');
+            if (heartIcon.classList.contains('liked')) {
+                heartIcon.classList.remove('liked');
+                // AJAX request to unlike the beat
+                // fetch('/beat/{{ beat.id }}/unlike/', { method: 'POST', headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
+                //     .then(response => response.json())
+                //     .then(data => { /* Update like count */ });
+            } else {
+                heartIcon.classList.add('liked');
+                // AJAX request to like the beat
+                // fetch('/beat/{{ beat.id }}/like/', { method: 'POST', headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
+                //     .then(response => response.json())
+                //     .then(data => { /* Update like count */ });
+            }
+        }
+
+        // Report Beat functionality
+        function reportBeat() {
+            // AJAX request to report the beat
+            // fetch('/beat/{{ beat.id }}/report/', { method: 'POST', headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         alert('Beat şikayet edildi!');
+            //     });
+            alert('Beat şikayet edildi!');
+        }
+
+        // Report Comment functionality
+        function reportComment(commentId) {
+            // AJAX request to report the comment
+            // fetch(`/comment/${commentId}/report/`, { method: 'POST', headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         alert('Yorum şikayet edildi!');
+            //     });
+            alert('Yorum şikayet edildi!');
+        }
+    </script>
+</body>
+</html>
+{% endblock body %}

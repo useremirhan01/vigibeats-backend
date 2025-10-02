@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .navbar {
+      background: linear-gradient(90deg, rgb(12, 39, 15) 0%, rgb(120, 11, 124) 100%);
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .nav-link {
+      font-size: 1.1rem;
+      margin-right: 10px;
+    }
+    .navbar-toggler {
+      border: none;
+    }
+    .navbar-toggler:focus {
+      outline: none;
+      box-shadow: none;
+    }
+    .navbar-toggler-icon {
+      color: white;
+    }
+    .navbar-nav .nav-item.active .nav-link {
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+    <a class="navbar-brand" href="{% url 'index' %}">VIGIBEATS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon">&#9776;</span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'index' %}">Anasayfa</a>
+        </li>
+        <li class="nav-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'about' %}">Hakkımızda</a>
+        </li>
+        <li class="nav-item {% if request.resolver_match.url_name == 'articles' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'article:articles' %}">BEATLER</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        {% if request.user.is_authenticated %}
+          <li class="nav-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            <a class="nav-link" href="{% url 'article:dashboard' %}">Kontrol Paneli</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'user:logout' %}">Çıkış Yap</a>
+          </li>
+        {% else %}
+          <li class="nav-item {% if request.resolver_match.url_name == 'login' %}active{% endif %}">
+            <a class="nav-link" href="{% url 'user:login' %}">Giriş Yap</a>
+          </li>
+          <li class="nav-item {% if request.resolver_match.url_name == 'register' %}active{% endif %}">
+            <a class="nav-link" href="{% url 'user:register' %}">Kayıt Olun</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
