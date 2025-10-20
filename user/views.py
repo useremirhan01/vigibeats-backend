@@ -5,8 +5,26 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login,authenticate,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+
+from rest_framework import generics, permissions
+from .serializers import UserSerializer
+
+
 # Create your views here.
 
+class MeView(generics.RetrieveAPIView):
+    """
+    Giriş yapan kullanıcının kendi bilgilerini döndürür.
+    JWT token zorunludur.
+    """
+
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+    
+    
 def register(request):
     form = RegisterForm(request.POST or None)
     if form.is_valid():

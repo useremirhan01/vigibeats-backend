@@ -1,121 +1,89 @@
-from django.shortcuts import render,HttpResponse,redirect,get_object_or_404,reverse
-from .forms import ArticleForm, ArticleFileForm,ArticleFileFormSet
-from .models import Article,Comment,ArticleFile
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
 from django.conf import settings
-import os
+from rest_framework import viewsets, permissions
+from .models import Beat
+from .serializers import BeatSerializer
 
 
-# Create your views here.
+# -----------------------
+# 1. HTML Sayfaları
+# -----------------------
+
 def index(request):
-    context = {
-        "number" : 7,
-        "number2" : 9
-        
-    }
-    return render(request, "index.html",context)
-
-def articles(request):
-    articles = Article.objects.all()
-    keyword = request.GET.get("keyword")
-    if keyword:
-        articles = Article.objects.filter(title__contains = keyword)
-        return render(request,"articles.html",{"articles":articles})
-    
-    
-    context = {
-        
-        "articles" : articles
-    }
-    
-    
-    return render(request,"articles.html",context)
-
+    """Ana sayfa"""
+    return render(request, "index.html", {})
 
 
 def about(request):
-    return render(request, "about.html")
+    """Hakkında sayfası"""
+    return render(request, "about.html", {})
 
 
+@login_required
 def dashboard(request):
-    articles = Article.objects.filter(author = request.user)
-    context = {
-        
-        "articles" : articles
-    }
-    
-    return render(request,"dashboard.html",context)
+    """Kullanıcının yüklediği beatleri listeler"""
+    beats = Beat.objects.filter(producer=request.user)
+    return render(request, "dashboard.html", {"beats": beats})
+
+
+# -----------------------
+# 2. Beat CRUD API (DRF)
+# -----------------------
+
+class IsProducerOrReadOnly(permissions.BasePermission):
+    """
+    Producer rolündeki kullanıcılar kendi beatlerini oluşturabilir, düzenleyebilir.
+    Diğer herkes sadece görebilir.
+    """
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return request.user.is_authenticated and getattr(request.user, "role", None) == "producer"
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.producer == request.user
+
+
+class BeatViewSet(viewsets.ModelViewSet):
+    queryset = Beat.objects.all().order_by("-created_at")
+    serializer_class = BeatSerializer
+    permission_classes = [IsProducerOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(producer=self.request.user)
+
+
+# -----------------------
+# 3. Beat Ekleme (HTML form sürümü)
+# -----------------------
 
 @login_required
-def addArticle(request):
+def add_beat(request):
+    """
+    Basit HTML formu üzerinden beat yükleme (şimdilik yerel dosya sistemi).
+    """
     if request.method == "POST":
-        form = ArticleForm(request.POST)
-        formset = ArticleFileFormSet(request.POST, request.FILES, queryset=ArticleFile.objects.none())
-        if form.is_valid() and formset.is_valid():
-            article = form.save(commit=False)
-            article.author = request.user
-            article.save()
-            for form in formset:
-                if form.cleaned_data:
-                    file = form.cleaned_data.get('file')
-                    if file:
-                        # Her bir dosya için yeni bir ArticleFile nesnesi oluştur
-                        article_file = ArticleFile(article=article, file=file)
-                        article_file.save()
-            messages.success(request, "Makale ve dosyalar başarıyla yüklendi.")
-            return redirect("/articles/dashboard")
-    else:
-        form = ArticleForm()
-        formset = ArticleFileFormSet(queryset=ArticleFile.objects.none())
-    return render(request, "addarticle.html", {"form": form, "formset": formset})
+        title = request.POST.get("title")
+        bpm = request.POST.get("bpm")
+        key = request.POST.get("key")
+        license_type = request.POST.get("license_type")
+        price = request.POST.get("price")
+        file = request.FILES.get("file")
 
+        Beat.objects.create(
+            title=title,
+            bpm=bpm or 120,
+            key=key or "",
+            license_type=license_type or "basic",
+            price=price or 0.0,
+            file=file,
+            producer=request.user,
+        )
+        messages.success(request, "Beat başarıyla yüklendi.")
+        return redirect("dashboard")
 
-
-
-def detail(request,id):
-    #article = Article.objects.filter(id = id).first
-    article = get_object_or_404(Article, id = id)
-    Comments = article.comments.all()
-    return render(request,"detail.html",{"article" : article,"Comments": Comments})
-
-
-@login_required
-def updateArticle(request,id):
-    article = get_object_or_404(Article, id = id)
-    form = ArticleForm(request.POST or None,request.FILES or None,instance = article)
-    if form.is_valid():
-        article = form.save(commit=False)
-        
-        article.author = request.user
-        article.save()
-        messages.success(request,"Makale Başarıyla Kaydedildi...")
-        return redirect("/articles/dashboard")
-        
-    return render(request,"update.html",{"form" : form})
-            
-@login_required
-def delete(request,id):
-    article = get_object_or_404(Article,id = id)
-    form = ArticleForm(request.POST or None,request.FILES or None,instance = article)
-    article.delete()
-    messages.success(request,"Makale Silindi...")
-    return redirect("/articles/dashboard")
-
-def addComment(request,id):
-    article = get_object_or_404(Article,id = id)
-    
-    if request.method == "POST":
-        comment_author = request.POST.get("comment_author")
-        comment_content = request.POST.get("comment_content")
-        
-        newComment = Comment(comment_author = comment_author, comment_content = comment_content)
-        
-        newComment.article = article
-        
-        newComment.save()
-        
-    #return redirect("/articles/article/" + str(id))
-    return redirect(reverse("article:detail",kwargs= {"id" : id}))
+    return render(request, "addbeat.html")

@@ -1,0 +1,7 @@
+djangorestframework
+djangorestframework-simplejwt
+dj-rest-auth
+django-allauth
+drf-spectacular
+django-cors-headers
+argon2-cffi

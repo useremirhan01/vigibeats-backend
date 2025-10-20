@@ -19,6 +19,12 @@ from django.urls import path,include
 from article import views
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+
 
 
 urlpatterns = [
@@ -29,6 +35,16 @@ urlpatterns = [
     path('user/',include("user.urls")),
     path('captcha/', include('captcha.urls')),
     path('accounts/', include('allauth.urls')),
+    path("api/auth/", include("dj_rest_auth.urls")),
+    path("api/auth/registration/", include("dj_rest_auth.registration.urls")),
+    path("api/auth/jwt/create/", TokenObtainPairView.as_view(), name="jwt-create"),
+    path("api/auth/jwt/refresh/", TokenRefreshView.as_view(), name="jwt-refresh"),
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema")),   
+    path("api/user/", include("user.urls")),
+    path("api/", include("article.urls")),
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
