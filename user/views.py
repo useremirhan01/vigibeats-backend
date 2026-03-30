@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from .forms import LoginForm, RegisterForm
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login,authenticate,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -32,6 +32,7 @@ def register(request):
         password = form.cleaned_data.get("password")
         email = form.cleaned_data.get("email")
 
+        User = get_user_model()
         newUser = User(username=username, email=email)
         newUser.set_password(password)
 

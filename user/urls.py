@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from article import views
 from .views import MeView
 
@@ -13,5 +13,6 @@ urlpatterns = [
     path('logout/',views.logoutUser,name = "logout"),
     path('renewpassword/',views.renew_password,name = "renewpassword"),
     path("me/", MeView.as_view(), name="me"),
+    path("api/", include("orders.urls")),
 
 ]

@@ -20,8 +20,8 @@ class Beat(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     license_type = models.CharField(max_length=20, choices=LICENSE_CHOICES, default="basic")
 
-    file = models.FileField(upload_to="beats/originals/")
-    watermark_file = models.FileField(upload_to="beats/watermarks/", blank=True, null=True)
+    audio_file = models.FileField(upload_to="beats/", null=True, blank=True)
+    cover_image = models.ImageField(upload_to="covers/", null=True, blank=True)
 
     producer = models.ForeignKey(
         settings.AUTH_USER_MODEL,
