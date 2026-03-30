@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "drf_spectacular",
     "corsheaders",
+    "orders",
 ]
 
 AUTH_USER_MODEL = "user.User"  # custom user
