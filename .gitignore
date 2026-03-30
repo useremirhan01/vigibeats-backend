@@ -1,0 +1,14 @@
+# Gizli anahtar dosyası
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+env/
+
+# Local media ve static dosyaları
+/media/
+staticfiles/
