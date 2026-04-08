@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from .views import BeatViewSet, dashboard
+from .views import BeatViewSet, add_beat, dashboard
 
 app_name = "article"
 
@@ -11,4 +11,5 @@ router.register("beats", BeatViewSet, basename="beat")
 
 urlpatterns = [
     path("dashboard/", dashboard, name="dashboard"),
+    path("beats/add/", add_beat, name="add_beat"),
 ] + router.urls

@@ -72,6 +72,14 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
+APP_BASE_URL = os.getenv("APP_BASE_URL", "http://localhost:8000")
+IYZICO_API_KEY = os.getenv("IYZICO_API_KEY", "")
+IYZICO_SECRET_KEY = os.getenv("IYZICO_SECRET_KEY", "")
+IYZICO_BASE_URL = os.getenv("IYZICO_BASE_URL", "https://sandbox-api.iyzipay.com")
+IYZICO_CALLBACK_URL = os.getenv("IYZICO_CALLBACK_URL", "")
+IYZICO_LOCALE = os.getenv("IYZICO_LOCALE", "tr")
+IYZICO_TIMEOUT = int(os.getenv("IYZICO_TIMEOUT", "30"))
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -9,9 +9,11 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ("id", "email", "status", "amount", "created_at")
-    list_filter = ("status", "license_type", "created_at")
-    search_fields = ("email", "full_name")
+    inlines = [OrderItemInline]
+    list_display = ("id", "tracking_code", "email", "status", "amount", "currency", "created_at")
+    list_filter = ("status", "currency", "created_at", "paid_at", "fulfilled_at")
+    search_fields = ("email", "full_name", "tracking_code")
+    readonly_fields = ("tracking_code", "created_at", "updated_at", "paid_at", "fulfilled_at")
 
 
 @admin.register(OrderItem)

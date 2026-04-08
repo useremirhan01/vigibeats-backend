@@ -12,6 +12,9 @@ class BeatForm(forms.ModelForm):
             "key",
             "tags",
             "price",
+            "premium_price",
+            "exclusive_price",
             "license_type",
-            "file",
+            "audio_file",
+            "cover_image",
         ]

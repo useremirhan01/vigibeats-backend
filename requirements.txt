@@ -5,3 +5,4 @@ django-allauth
 drf-spectacular
 django-cors-headers
 argon2-cffi
+python-dotenv
